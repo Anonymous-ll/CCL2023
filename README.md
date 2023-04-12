@@ -13,3 +13,6 @@ This website provides source code and datasets for a paper submitted at CCL 2023
 (5) run the file hrea_amazon_level1_train.py to train the first student model
 
 (6) run the file hrea_amazon_level1_explore.py to explore the aspect-groups in first level
+
+
+![visual](https://user-images.githubusercontent.com/130581857/231504050-030e2eb6-03ca-4aae-a3f4-3c536ee36d68.png)

@@ -116,7 +116,7 @@ encoder = TextEncoder(
                     n_layers=n_layers,
                     dropout=dropout,
                     bidirectional=True,
-                    embedding=emb,                  # word embeddings
+                    embedding=emb,                  # 词嵌入
                     input_size=input_size,
                     enc_dim=encoder_enc_dim).to(device)
 
@@ -184,18 +184,18 @@ def train_loop(train_dataloader, model, loss_fn):
         z = torch.tensor(z, dtype=torch.float).to(device)
         max_len = max(s.numpy())
 
-        # update generator
+        # 更新生成器参数
         model.zero_grad()
-        pred, encoded_doc = model(x.to(device), s, max_len)  # context is also encoded doc
+        pred, encoded_doc = model(x.to(device), s, max_len)  # 
         pred = torch.transpose(pred, 1, 2)
         f_output = discriminator(encoded_doc)
-        rec_loss = loss_fn(pred, x[:,0:max_len].to(device))  # reconstructed loss
+        rec_loss = loss_fn(pred, x[:,0:max_len].to(device))  # 重构损失
         gloss = lam2 * rec_loss + (1-lam2) * generator_loss(f_output)
         gloss.backward()
         optimizerG.step()
         gen_loss += gloss.item()
 
-        # update discriminator
+        # 更新判别器参数
         discriminator.zero_grad()
         r_output = discriminator(z)
         dloss = discriminator_loss(r_output, f_output.detach())

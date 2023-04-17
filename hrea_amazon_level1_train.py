@@ -79,11 +79,11 @@ def get_dataloader(dataset, train_test_ratio):
     return train_loader, test_loader
 
 # 4. 加载自编码器
-daae = torch.load(encoder_name)  # pretrained encoder
+daae = torch.load(encoder_name)  # 预训练的自编码器
 encoder = daae.module.encoder
 encoder = nn.DataParallel(encoder.to(device))
 
-for param in encoder.parameters():  # set encoder untrainable
+for param in encoder.parameters():  # 将自编码器部分设置为不可训练
     param.requires_grad = False
 
 model = Student1(encoder.to(device), abase, (bank_size, embed_dim), enc_dim).to(device)
@@ -102,7 +102,7 @@ def train_loop(train_dataloader, model, loss_fn, optimizer):
     total_loss = 0
     num_batches = len(train_dataloader)
 
-    for Xp, Xn, lp, ln, nounp, nounn in train_dataloader:  # p positive, n negative
+    for Xp, Xn, lp, ln, nounp, nounn in train_dataloader:  # p 为正实例, n 为负实例
         lp = torch.tensor(lp, dtype=torch.int32)
         ln = torch.tensor(ln, dtype=torch.int32)
         Sp, Se = model(Xp.to(device), lp)

@@ -47,7 +47,7 @@ amazon-embed.txt：Amazon数据集词嵌入文档
 
 （2）K-means
 
-![visual](K-means6.png)
+![visual](K-means.png)
 
 （3）GMM
 

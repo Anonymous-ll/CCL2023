@@ -42,3 +42,13 @@ amazon-embed.txt：Amazon数据集词嵌入文档
 
 # 方面聚类基线模型实验结果图
 （1）LDA
+
+![visual](LDA.png)
+
+（2）K-means
+
+![visual](K-means6.png)
+
+（3）GMM
+
+![visual](gmm.png)

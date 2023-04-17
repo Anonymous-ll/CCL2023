@@ -1,7 +1,9 @@
 # CCL2023
+
 网站中提供的是在CCL2023中提交的论文“基于自监督学习的方面聚类”的源代码与数据集等相关文件。
 
 # 数据集说明
+
 amazon-aspects-category-distribution.txt：方面的类别分布文档
 
 amazon-review-100k.rar：Amazon数据集文档
@@ -27,4 +29,7 @@ amazon-embed.txt：Amazon数据集词嵌入文档
 
 
 # 使用t-SNE可视化的实验效果图
+
+这张图片展示了对Amazon数据集中的评论自编码后聚类可视化，每种颜色代表一个类别。
+
 ![visual](https://user-images.githubusercontent.com/130581857/231504050-030e2eb6-03ca-4aae-a3f4-3c536ee36d68.png)

@@ -11,7 +11,7 @@ with open('bank1.out', 'rb') as f:
 
 with open('vocab.pl', 'rb') as f:
     vocab = pickle.load(f)
-bank_size = bank.shape[0]   # selector size
+bank_size = bank.shape[0]   # 选择器的大小设定
 model_name = f'pkg_level1_bank{bank_size}.model'
 embed_file = 'amazon-embed.txt'
 filename   = 'encoder_parameters.pl'
@@ -28,13 +28,13 @@ E = word_embeds.build_aspect_base(embed_file, nouns, embed_dim)  # aspects base
 idx2token = vocab.get_idx_to_token()
 vocab_size = len(idx2token)
 
-idx_word = {}                       # index in nouns->word
+idx_word = {}                       # 名词索引对应
 for i in range(len(nouns)):
     idx_word[i] = idx2token[nouns[i]]
 
 M = np.matmul(bank, np.transpose(E))
 
-# find top n similar words for a cluster
+# 找到方面簇中与质心最相近的前n个词
 def find(vec, idx_word, topn):
     idx = np.argsort(vec)[::-1][:topn]
     return ([f'{idx_word[id]}:{vec[id]:0.1f}' for id in idx])

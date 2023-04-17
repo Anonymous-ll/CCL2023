@@ -1,4 +1,4 @@
-# 方面提取
+# TAAE实现方面提取
 
 import numpy as np
 import pickle

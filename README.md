@@ -35,7 +35,7 @@ amazon-embed.txt：Amazon数据集词嵌入文档
 ![visual](https://user-images.githubusercontent.com/130581857/231504050-030e2eb6-03ca-4aae-a3f4-3c536ee36d68.png)
 
 
-# 对方面聚类
+# 对Amazon数据集进行50个方面簇聚类
 
 ![visual](fig6.png)
 

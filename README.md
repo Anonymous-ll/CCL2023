@@ -14,5 +14,10 @@
 
 (6) run the file hrea_amazon_level1_explore.py to explore the aspect-groups in first level
 
+# 数据集说明
+amazon-aspects-category-distribution.txt：方面的类别分布文档
+amazon-review-100k.rar：Amazon数据集文档
+amazon-embed.txt：Amazon数据集词嵌入文档
+
 # 使用t-SNE可视化的实验效果图
 ![visual](https://user-images.githubusercontent.com/130581857/231504050-030e2eb6-03ca-4aae-a3f4-3c536ee36d68.png)

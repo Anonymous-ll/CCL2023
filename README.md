@@ -33,3 +33,9 @@ amazon-embed.txt：Amazon数据集词嵌入文档
 这张图片展示了对Amazon数据集中的评论自编码后聚类可视化，每种颜色代表一个类别。
 
 ![visual](https://user-images.githubusercontent.com/130581857/231504050-030e2eb6-03ca-4aae-a3f4-3c536ee36d68.png)
+
+
+# 对方面聚类
+
+![visual](fig6.png)
+

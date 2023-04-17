@@ -9,7 +9,7 @@ import torch.nn as nn
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 from torch.autograd import Variable as V
 
-# encoder for my autoencoder
+# TAAE
 class TextEncoder(nn.Module):
     def __init__(self,
                  hidden_dim,
@@ -131,7 +131,7 @@ class TextAutoencoder(nn.Module):
         s = torch.tensor(s).to('cpu')
         context, cell = self.encoder(x2, s)     # context c
 
-        # randomly replace with <zero>
+        # 用 <zero> 实现随机替换
         for i in torch.arange(x.shape[0]):
             end = int(sum(x[i] != 0))
             num = math.ceil(end * ratio)

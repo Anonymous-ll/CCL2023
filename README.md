@@ -1,4 +1,4 @@
-# CCL2023
+# CCL2023 源代码与数据集实现步骤说明
 
 This website provides source code and datasets for a paper submitted at CCL 2023. To train the model, please follow these steps:
 

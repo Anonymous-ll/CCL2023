@@ -1,4 +1,4 @@
-# explore aspects in first level
+# 方面提取
 
 import numpy as np
 import pickle

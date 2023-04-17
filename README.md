@@ -16,7 +16,9 @@
 
 # 数据集说明
 amazon-aspects-category-distribution.txt：方面的类别分布文档
+
 amazon-review-100k.rar：Amazon数据集文档
+
 amazon-embed.txt：Amazon数据集词嵌入文档
 
 # 使用t-SNE可视化的实验效果图

@@ -1,4 +1,4 @@
-# training student 1 model with student-teacher learning
+# 基于学生-教师学习训练第二个自编码器（学生模型）
 
 import numpy as np
 import os, math, time
@@ -12,7 +12,7 @@ from hrea_amazon_txtprocess import WordEmbeds
 
 print(os.path.basename(__file__))
 
-# 1. hyper-parameters
+# 1. 超参数的选择
 embed_file = 'amazon-embed.txt'
 encoder_name = 'encoder.pth'
 filename = 'encoder_parameters.pl'
@@ -33,7 +33,7 @@ train_test_ratio = 0.9
 
 device = torch.device("cpu") if not torch.cuda.is_available() else torch.device("cuda")
 
-# 2. set the seed and GPU
+# 2. 设置种子seed和GPU
 def set_seed(seed):
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -50,7 +50,7 @@ os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:2"
 device = torch.device("cpu") if not torch.cuda.is_available() else torch.device("cuda")
 print("Using device", device)
 
-# 3. reading files, loading dataset
+# 3. 文件与数据集的读取
 with open('vocab.pl', 'rb') as f:
     vocab = pickle.load(f)
 
@@ -65,7 +65,7 @@ dic = vocab.get_idx_to_token()
 vocab_size = len(dic)
 print(f'vocabulary size: {vocab_size}')
 
-# nouns contains word id, aspect base contains words embeddings
+# 包含id的名字, 包含了词向量的方面库
 word_embeds = WordEmbeds(vocab.get_token_to_idx())
 abase = word_embeds.build_aspect_base(embed_file, nouns, embed_dim) # aspect base
 abase = torch.tensor(abase).to(device)
@@ -78,7 +78,7 @@ def get_dataloader(dataset, train_test_ratio):
     test_loader = DataLoader(test_data, batch_size=batch_size, num_workers=num_workers)
     return train_loader, test_loader
 
-# 4. load encoder
+# 4. 加载自编码器
 daae = torch.load(encoder_name)  # pretrained encoder
 encoder = daae.module.encoder
 encoder = nn.DataParallel(encoder.to(device))
@@ -97,7 +97,7 @@ def myloss(Se, Sp, Sn):
     loss = a + alpha * torch.maximum(torch.tensor(0), b)
     return loss
 
-# 6. training
+# 6. 训练
 def train_loop(train_dataloader, model, loss_fn, optimizer):
     total_loss = 0
     num_batches = len(train_dataloader)
@@ -145,7 +145,7 @@ for t in range(epochs):
     print(
         f"epoch {t + 1:2d}/{epochs}, train loss: {train_loss:0.3f}, valid loss:{valid_loss:0.3f}, time:{run_time:0.2f}")
 
-# 7. save memory bank
+# 7. 保存方面库
 with open(f'pkg_level1_bank{bank_size}.model', 'wb') as f:
     pickle.dump(model, f)
 

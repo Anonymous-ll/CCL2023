@@ -145,7 +145,7 @@ for t in range(epochs):
     print(
         f"epoch {t + 1:2d}/{epochs}, train loss: {train_loss:0.3f}, valid loss:{valid_loss:0.3f}, time:{run_time:0.2f}")
 
-# 7. 保存方面库
+# 7. 保存方面
 with open(f'pkg_level1_bank{bank_size}.model', 'wb') as f:
     pickle.dump(model, f)
 

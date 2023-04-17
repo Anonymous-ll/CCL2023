@@ -1,4 +1,4 @@
-# The classes for text processing
+# 文本处理中的类
 
 from collections import defaultdict
 import re
@@ -27,9 +27,9 @@ class Category:
         clist = [self.cate_to_idx[item] for item in cate_list]
         return clist
 
-# id 0, 1 correspond "<zero>","<unk>"
+# id 0, 1 对应 "<zero>","<unk>"
 # all zero padding give an embedding of all zero
-# <mask> will be used in denoising AE
+# <mask> 被应用在降噪对抗自编码器中
 class Vocab:
     def __init__(self, is_eng=True):
         self.idx_to_token = dict()
@@ -38,7 +38,7 @@ class Vocab:
         self.nouns_id = None  # id of nouns
         self.tokens = None  # unique tokens
 
-    # text is a list, each element is a sentence
+    # 文本是一个列表，其中每个元素是一个句子
     def build(self, text, min_freq=1, reserved_tokens=None, noun_top=2000):
         token_freqs = defaultdict(int)
         noun_dic = defaultdict(int)
@@ -85,7 +85,7 @@ class Vocab:
         tlist = []
         nlist = []
 
-        for token in tokens:    # exclude <unk> from words sequence
+        for token in tokens:    # 从词序列中排除 <unk> 
             id = self[token]
             if id == 2:
                 continue
@@ -123,7 +123,7 @@ class TxtDataset(Dataset):
         y = self.labels[idx]
         return X, y
 
-# for variable-length
+# 对于length可变性的设定
 class TxtDataset2(Dataset):
     def __init__(self, pad_data, labels):
         self.labels = labels
@@ -178,10 +178,10 @@ class TxtDataset4(Dataset):
 
         return X1, X2, len1, len2, noun1, noun2
 
-# load the pretrained embeddings
+# 加载预训练词嵌入
 class WordEmbeds():
     def __init__(self, word_index):
-        self.word_index = word_index    # a dictionary of word->id
+        self.word_index = word_index    # word->id的字典
 
     def load(self, embed_file, embed_dim):
         num = 0
@@ -201,11 +201,11 @@ class WordEmbeds():
             else:
                 num += 1
 
-        # assign embeddings of <mask>. it is means of all words embeddings
+        # 设定<mask>的词嵌入. 对于所有词向量进行means操作
         embedding_matrix[1, ] = np.mean(embedding_matrix[2:, ], axis=0)
         return embedding_matrix, num
 
-    # building aspecta base from nouns
+    # 构建由名词组成的方面库
     def build_aspect_base(self, embed_file, nouns, embed_dim):
         num = 0
         embeddings_index = {}

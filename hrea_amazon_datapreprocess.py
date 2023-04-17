@@ -1,7 +1,7 @@
 '''
-for Amzaon dataset
-this is first task for HREA that pre-process data for all tasks
-it will save files: dataset, vocab, category, and word embedding matrix
+对Amazon数据集进行实验
+该代码文件为数据预处理过程
+将保存内容：数据、词汇表、类别标签与词嵌入矩阵
 '''
 
 import pickle

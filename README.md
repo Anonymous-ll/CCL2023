@@ -30,7 +30,7 @@ amazon-embed.txt：Amazon数据集词嵌入文档
 
 # 使用t-SNE可视化的实验效果图
 
-这张图片展示了对Amazon数据集中的评论自编码后聚类可视化，每种颜色代表一个类别。
+这张图片展示了对Amazon数据集中的评论自编码后聚类可视化效果，每种颜色代表一个类别。
 
 ![visual](https://user-images.githubusercontent.com/130581857/231504050-030e2eb6-03ca-4aae-a3f4-3c536ee36d68.png)
 

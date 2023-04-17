@@ -23,7 +23,7 @@ embed_dim = parameters_dic['embedding_dim']
 
 nouns = vocab.nouns_id
 word_embeds = WordEmbeds(vocab.get_token_to_idx())
-E = word_embeds.build_aspect_base(embed_file, nouns, embed_dim)  # aspects base
+E = word_embeds.build_aspect_base(embed_file, nouns, embed_dim)  # 方面库
 
 idx2token = vocab.get_idx_to_token()
 vocab_size = len(idx2token)

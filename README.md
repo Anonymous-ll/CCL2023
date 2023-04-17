@@ -37,7 +37,7 @@ amazon-embed.txt：Amazon数据集词嵌入文档
 
 # ACTAAE实现对Amazon数据集进行50个方面簇聚类
 
-![visual](pic\fig6.png)
+![visual](pic/fig6.png)
 
 
 # 方面聚类基线模型实验结果图

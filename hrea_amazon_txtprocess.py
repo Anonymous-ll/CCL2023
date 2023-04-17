@@ -1,4 +1,4 @@
-# 文本处理中的类
+# 文本处理中类的定义
 
 from collections import defaultdict
 import re
@@ -28,7 +28,7 @@ class Category:
         return clist
 
 # id 0, 1 对应 "<zero>","<unk>"
-# all zero padding give an embedding of all zero
+# 所有的零填充设定为全零嵌入
 # <mask> 被应用在降噪对抗自编码器中
 class Vocab:
     def __init__(self, is_eng=True):
@@ -181,7 +181,7 @@ class TxtDataset4(Dataset):
 # 加载预训练词嵌入
 class WordEmbeds():
     def __init__(self, word_index):
-        self.word_index = word_index    # word->id的字典
+        self.word_index = word_index    # word->id
 
     def load(self, embed_file, embed_dim):
         num = 0

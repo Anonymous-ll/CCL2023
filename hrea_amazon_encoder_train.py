@@ -1,6 +1,6 @@
 '''
-amazon dataset
-Training a denoising text adversarial autoencoder.
+对于Amazon数据集
+训练一个加入了噪声的文本对抗自编码器
 '''
 
 import pickle

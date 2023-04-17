@@ -1,7 +1,7 @@
 '''
 对Amazon数据集进行实验
 该代码文件为数据预处理过程
-将保存内容：数据、词汇表、类别标签与词嵌入矩阵
+将保存内容：数据、词典、类别标签与词嵌入矩阵
 '''
 
 import pickle
@@ -16,25 +16,25 @@ from hrea_amazon_txtprocess import Vocab, Category, TxtDataset2, TxtDataset4, Wo
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
 
-# 1. hyper-parameters
+# 1. 超参数的选择
 review_file   = 'amazon-review-100k.json'
 embed_file    = 'amazon-embed.txt'
 # review_file   = 'amazon-yelp-review-1m.json'
 # embed_file    = 'amazon-1M-embeds-100.txt'
-embedding_dim = 50        # dim of pretrained word embeds
+embedding_dim = 50        # 预训练词嵌入矩阵的维数
 word_freq     = 35
 num_worker    = 15
 max_seq_length= 400
 
 print(os.path.basename(__file__))
 
-# 1. building dataset
+# 1. 构建数据集
 fin         = open(review_file)
 lines       = fin.readlines()
 cate_list   = list()
 review_list = list()
 
-# 1.1 reading files, building vocabulary and class
+# 1.1 读取文件，建立词典和类别
 for line in lines:
     dic = json.loads(line)
     cate_list.append(dic['category'])
@@ -63,7 +63,7 @@ seq_len = max([len(line) for line in data])
 print(f"max sequence length: {seq_len}")
 seq_len = seq_len if seq_len < max_seq_length else max_seq_length
 
-# 1.2 build a matrix for padding
+# 1.2 建立一个填充矩阵
 pad_data = np.zeros((len(data), seq_len), dtype=int)
 pad_noun = np.zeros((len(data), seq_len), dtype=int)
 
@@ -89,15 +89,15 @@ shuffle_indices = np.random.permutation(shuffle_indices)
 pad_data2 = pad_data[shuffle_indices]
 pad_noun2 = pad_noun[shuffle_indices]
 
-# 1.3 building data loader
+# 1.3 构建数据加载器
 dataset  = TxtDataset2(pad_data1, clist)                          # for encoder use
 dataset2 = TxtDataset4(pad_data1, pad_data2, pad_noun, pad_noun2) # for hiercluster use
 
-# 1.4 word embeddings
+# 1.4 词嵌入
 word_embeds = WordEmbeds(vocab.get_token_to_idx())
 weight_matrix,_ = word_embeds.load(embed_file, embedding_dim)
 
-# 1.5 save to disc
+# 1.5 保存文件
 filename = 'dataset.pl'
 outfile = open(filename,'wb')
 pickle.dump(dataset, outfile)

@@ -20,12 +20,12 @@ from torch.utils.data import random_split
 from hrea_amazon_model import TextAutoencoder, TextEncoder
 
 
-# 1. hyper-parameters
+# 1. 超参数的选择
 g_lr          = 0.0008
 d_lr          = 0.002
 epochs        = 20
 batch_size    = 180
-embedding_dim = 50        # dim of pretrained word embeds
+embedding_dim = 50        # 预训练词嵌入的维数
 n_layers      = 2
 hidden_dim    = 512
 dropout       = 0.5
@@ -36,7 +36,7 @@ num_worker    = 15
 max_seq_length   = 400
 train_test_ratio = 0.8
 train_vali_ratio = 0.9
-encoder_enc_dim  = 100        # dimentions of encoded reivew
+encoder_enc_dim  = 100        # 评论自编码表示向量的维数
 word_embeds_trainable = False
 
 print(os.path.basename(__file__))
@@ -51,7 +51,7 @@ outfile = open(filename,'wb')
 pickle.dump(parameters_dic,outfile) # for hiercluster
 outfile.close()
 
-# 2. set the seed and GPU
+# 2. 设置种子seed和GPU
 def set_seed(seed):
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -67,7 +67,7 @@ os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:2"
 device = torch.device("cpu") if not torch.cuda.is_available() else torch.device("cuda")
 print("Using device", device)
 
-# 3. dataset
+# 3. 数据集
 filename = 'dataset.pl'
 outfile = open(filename,'rb')
 dataset = pickle.load(outfile)
@@ -102,15 +102,15 @@ def get_dataloader(dataset, train_test_ratio, num_workers):
     return train_loader, test_loader
 
 
-# 4. model
-# 4.1 building embed layer
+# 4. 模型
+# 4.1 构建嵌入层
 num_embeddings, _ = weight_matrix.shape
 emb = nn.Embedding(num_embeddings, embedding_dim, padding_idx=0)
 emb.weight = torch.nn.Parameter(torch.from_numpy(weight_matrix))
 emb.weight.requires_grad = word_embeds_trainable
 input_size = weight_matrix.shape[1]
 
-#4.2 building autoencoder
+#4.2 构建自编码器
 encoder = TextEncoder(
                     hidden_dim=hidden_dim,
                     n_layers=n_layers,
@@ -121,7 +121,7 @@ encoder = TextEncoder(
                     enc_dim=encoder_enc_dim).to(device)
 
 
-# text autoencoder including a decoder
+# 包含解码器decoder的文本自编码器
 model = TextAutoencoder(encoder,
                         embedding=emb,
                         hidden_dim=hidden_dim,
@@ -132,7 +132,7 @@ model = TextAutoencoder(encoder,
 
 model = nn.DataParallel(model.to(device))
 
-# 4.3 discriminator
+# 4.3 判别器
 discriminator = nn.Sequential(
     nn.Linear(in_features=encoder_enc_dim, out_features=128),
     nn.LeakyReLU(),
@@ -143,7 +143,7 @@ discriminator = nn.Sequential(
     )
 discriminator = nn.DataParallel(discriminator.to(device))
 
-# loss function of discriminator
+# 判别器的损失函数
 bceloss = nn.BCELoss()
 def discriminator_loss(real_output, fake_output):
     real_loss = bceloss(real_output, torch.ones(real_output.shape). to(device))
@@ -155,8 +155,8 @@ def generator_loss(fake_output):
     fake_loss = bceloss(fake_output, torch.ones(fake_output.shape).to(device))
     return fake_loss
 
-# 5. training
-# (1) initialization
+# 5. 训练
+# (1) 初始化过程
 def xavier_init(model):
     for name, param in model.named_parameters():
         if name.endswith(".bias"):
@@ -168,7 +168,7 @@ def xavier_init(model):
 xavier_init(discriminator)
 
 
-# (2) training
+# (2) 训练过程
 loss_fn   = nn.CrossEntropyLoss()
 optimizerG = torch.optim.Adam(model.parameters(), lr=g_lr, betas=(0.5, 0.995))
 optimizerD = torch.optim.Adam(discriminator.parameters(), lr=d_lr)

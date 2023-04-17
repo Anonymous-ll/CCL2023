@@ -1,5 +1,5 @@
 '''
-models for HREA
+ACTAAE模型构建
 '''
 
 import math, random, numpy as np
@@ -13,13 +13,13 @@ from torch.autograd import Variable as V
 class TextEncoder(nn.Module):
     def __init__(self,
                  hidden_dim,
-                 n_layers,           # n_layers of LSTM
-                 bidirectional,      # bidirectional of LSTM
-                 dropout,            # dropout of LSTM
-                 embedding,          # word embeddings
+                 n_layers,           # LSTM的层数
+                 bidirectional,      # 双向LSTM的设定
+                 dropout,            # LSTM中的dropout设定
+                 embedding,          # 词嵌入
                  input_size,
-                 features = 200,     # features in M
-                 enc_dim  = 256      # dim of encoded reivew
+                 features = 200,     # 特征矩阵M中的特征
+                 enc_dim  = 256      # 评论自编码表示向量的维度
                  ):
         super(TextEncoder, self).__init__()
         self.embedding = embedding
@@ -30,7 +30,7 @@ class TextEncoder(nn.Module):
                  bidirectional=bidirectional,
                  dropout=dropout,
                  batch_first=True)
-        # --- self attention ---
+        # --- 自注意力机制设定 ---
         self.enc_dim = enc_dim
         self.ws1 = nn.Linear(2 * hidden_dim, 500)
         self.tanh = nn.Tanh()
@@ -48,7 +48,7 @@ class TextEncoder(nn.Module):
         self.cnn2 = nn.Conv2d(20, 30, 10, stride=5)
         self.pool2 = nn.MaxPool2d(kernel_size=2)
 
-        # initialization
+        # 初始化
         self.__initit_lstm__(self.lstm)
         nn.init.xavier_uniform_(self.ws1.weight)
         nn.init.xavier_uniform_(self.ws2.weight)
@@ -73,7 +73,7 @@ class TextEncoder(nn.Module):
         A = self.softmax(self.ws2(ws1))
         M = torch.transpose(A, 1, 2) @ H
 
-        # using cnn
+        # cnn构建
         M = torch.reshape(M, (M.shape[0],1 , M.shape[1], M.shape[2]))
         cnn1_out = self.cnn1(M)
         cnn1_pool = self.pool1(cnn1_out)
@@ -86,7 +86,7 @@ class TextEncoder(nn.Module):
         enc = self.fc(drop)
         return enc, embeds
 
-# autoencoder
+# 自编码器构建
 class TextAutoencoder(nn.Module):
     def __init__(self,
                  encoder,
@@ -115,7 +115,7 @@ class TextAutoencoder(nn.Module):
         self.fc = nn.Linear(hidden_dim + encoder.enc_dim, 1000)
         self.output_layer = nn.Linear(1000, output_size)
 
-         # initialization
+         # 初始化
         self.__init_lstm__(self.decoder)
         nn.init.xavier_uniform_(self.fc.weight)
         nn.init.xavier_uniform_(self.output_layer.weight)
@@ -138,7 +138,7 @@ class TextAutoencoder(nn.Module):
             idx = random.sample(list(range(end)), num)
             x[i, idx] = 0
 
-        # build decoder input, insert <zero> in first place as <start>
+        # 构建解码器decoder的输入, 加入<start>作为开始标记符，并以一定概率用<zero>对词嵌入进行替换
         x[:, 1:] = x[:, 0:(x.shape[1] - 1)]  # append start token 2 <zero>
         x[:, 0]  = 0
         embeds = self.embedding(x)
@@ -163,7 +163,7 @@ class TextAutoencoder(nn.Module):
     def get_encoder(self):
         return self.encoder
 
-# student 1 model
+# 第二个encoder，即学生模型的构建
 class Student1(nn.Module):
     def __init__(self, encoder, aspect_base, bank2_shape, enc_dim):
         super(Student1, self).__init__()
@@ -186,7 +186,7 @@ class Student1(nn.Module):
           nn.Tanh()
         )
 
-        # initialization
+        # 初始化
         nn.init.xavier_uniform_(self.cnn1.weight)
         nn.init.xavier_uniform_(self.cnn2.weight)
 
@@ -209,7 +209,7 @@ class Student1(nn.Module):
     def get_aspect_base(self):
         return self.abase
 
-    # bank or selector
+    # 选择器的构建
     def get_bank(self):
         return torch.transpose(self.selector, 0, 1)
 

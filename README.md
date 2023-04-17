@@ -39,3 +39,6 @@ amazon-embed.txt：Amazon数据集词嵌入文档
 
 ![visual](fig6.png)
 
+
+# 方面聚类基线模型实验结果图
+（1）LDA

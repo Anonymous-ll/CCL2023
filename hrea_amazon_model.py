@@ -9,7 +9,7 @@ import torch.nn as nn
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 from torch.autograd import Variable as V
 
-# TAAE
+# 构建TAAE中的编码器encoder部分
 class TextEncoder(nn.Module):
     def __init__(self,
                  hidden_dim,
@@ -86,7 +86,7 @@ class TextEncoder(nn.Module):
         enc = self.fc(drop)
         return enc, embeds
 
-# 自编码器构建
+# TAAE构建
 class TextAutoencoder(nn.Module):
     def __init__(self,
                  encoder,

@@ -1,6 +1,6 @@
 # CCL2023 源代码与数据集实现步骤说明
 
-This website provides source code and datasets for a paper submitted at CCL 2023. To train the model, please follow these steps:
+网站中提供的是在CCL2023中提交的论文“基于自监督学习的方面聚类”的源代码与数据集文件。请根据以下步骤实现模型的训练：
 
 (1) unzip the file amazon-review-100k.rar
 

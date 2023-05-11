@@ -52,3 +52,6 @@ amazon-embed.txt：Amazon数据集词嵌入文档
 （3）GMM
 
 ![visual](pic/gmm.png)
+
+（4）ABAE
+![visual](pic/abae.png)
